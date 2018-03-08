@@ -15,7 +15,7 @@ io.on('connection', function(socket){
 
     socket.on('nickname', function(nickname){
         var userName = nickname;
-        if(nickname == "") userName = `user${socket.id}`;
+        if(nickname == "") userName = `user${(socket.id).slice(0,4)}`;
         users[socket.id] = userName;
         socket.emit('nickname', userName);
         socket.broadcast.emit('add user', userName);
