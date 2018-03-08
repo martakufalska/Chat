@@ -6,38 +6,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300i,400,400i,700,900" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-
 </head>
 <body>
-    <form>
-        <div id="name-div">
-            <input id="name" name="name" autocomplete="off" autofocus placeholder="Enter your nickname" />
-            <button>Submit</button>
-        </div>
-        <div id="welcome"></div>
-        <ul id="messages"></ul>
-        <div id="input-div">
-            <input id="message" name="message" autocomplete="off" placeholder="Type your message here"/>
-            <button id="messageSubmit">Send</button>
+    <section id="nicknameEnter" class="displayFlex justCenter">
+        <header>
+            <h1>Let's chat</h1>
+        </header>
+        <form id="enterForm" class="displayFlex justCenter">
+            <input id="nickname" name="name" autocomplete="off" autofocus placeholder="Enter your nickname" />
+            <button id="nicknameSubmit" class="btn">Submit</button>
+        </form>
+    </section>
+    <form id="chatForm">
+        <header>
+            <h1>Let's chat</h1>
+            <button id="disconnect" class="btn" type="submit">Exit</button>
+        </header>
+        <div id="chatWindow">
+            <section id="usersSection">
+                <div id="userData">
+                    <div id="currentUserName"></div>
+                </div>
+                <div id="users">
+                    <h6>Users online</h6>
+                    <ul id="nicknames"></ul>
+                </div>
+            </section>
+            <section id="messageSection">
+                <div id="messagesWrapper">
+                    <dl id="messages"></dl>
+                </div>
+                <div id="inputMessage">
+                    <div id="inputMessageWrapper">
+                        <div id="messageText">
+                            <textarea id="message" name="message" autocomplete="off" placeholder="Type your message here"></textarea>
+                        </div>
+                        <div id="messageBtn">
+                            <button id="messageSubmit" class="btn" type="button">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </form>
-
+    
     <script>
-        $(function () {
+        $(document).ready(function(){
             var socket = io();
-            $('#messageSubmit').click(function(){
-                socket.emit('chat message', $('#message').val());
-                $('#message').val('');
+            $('#chatForm').hide();
+            $('#nicknameSubmit').click(function(){
+                nickname = $('#nickname').val();
+                socket.emit('nickname', nickname);
+                $('#nicknameEnter').hide();
                 return false;
             });
-            socket.on('chat message', function(msg){
-                $('#messages').append(`<li>${msg}</li>`);
+
+            socket.on('add online users', function(users){
+                console.log('add online users', users);
+                for (let user in users){
+                    $('#nicknames').append(`<li id=${users[user]}><i class="fas fa-user"></i> ${users[user]}</li>`);
+                }
+            })
+            
+            socket.on('nickname', function(userName){
+                $('#chatForm').show();
+                $('#currentUserName').html(`<i class="fas fa-user-circle"></i> &nbsp ${userName} <span class="editionalInfo"> (you)</span>`);
+            })
+
+            socket.on('add user', function(userName){
+                $('#nicknames').append(`<li id=${userName}><i class="fas fa-user"></i> ${userName}</li>`);
+                $('#messages').append(`<dd class="editionalInfo">User ${userName} connected.</dd>`);
+            });
+
+            function sendMessage() {
+                let text = $('#message').val();
+                socket.emit('chat message', {nickname: nickname, text:$('#message').val()});
+                $('#message').val('');
+                $('#messages').append(`<dt><span class="myMessage">${nickname}:</span></dt><dd><span class="myMessage">${text}</span></dd>`);
+                return false;
+            }
+
+            $('#chatForm').keydown( event => {if (event.ctrlKey && event.keyCode === 13) {sendMessage();}});
+
+            $('#messageSubmit').click(() => sendMessage());
+
+            socket.on('show message', (message) =>
+                $('#messages').append(`<dt>${message.nickname}:</dt><dd>${message.text}</dd>`)
+            )
+            
+            $('#chatForm').submit(() => socket.emit('disconnect'));
+
+            socket.on('user disconnected', function(userName){
+                $(`#${userName}`).remove();
+                if (userName != null)
+                $('#messages').append(`<dd class="editionalInfo">User ${userName} disconnected.</dd>`);
             })
         });
-
     </script>
-    
 </body>
 </html>

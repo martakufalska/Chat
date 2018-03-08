@@ -3,41 +3,196 @@
     padding: 0;
     box-sizing: border-box;
 }
-body {
-    font: 13px Helvetica, Arial;
+html, body {
+    height: 100%;
+    background-color: #FFD500;
+    font-family: 'Lato', sans-serif;
+    min-width: 500px;
 }
-form input {
-    border: 0;
-    padding: 10px;
-    width: 90%;
-    margin-right: .5%;
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 8px 20px;
+    background-color: #FFD500;
 }
-form button {
-    width: 9%;
-    background: rgb(130, 224, 255);
+
+header h1 {
+    color: #000;
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    font-size: 30px;
+    text-shadow: -1px 1px #fff;
+}
+
+.btn {
+    width: 80px;
+    height: 25px;
     border: none;
-    padding: 10px;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.04rem;
+    border-radius: 6px;
+    font-weight: 600;
+    background-color: #70706f;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
 }
-#name-div, #welcome {
-    background: #AAA;
-    padding: 10px;
+
+#currentUserName {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+#nicknameEnter {
+    flex-direction: column;
+}
+
+div header {
     width: 100%;
 }
-#input-div {
-    background: #000;
+
+#nickname{
+    height: 40px;
+    width: 200px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+.displayFlex {
+    display: flex;
+    align-items: center;
+}
+.justCenter, #messageBtn {
+    justify-content: center;
+}
+#enterForm {
+    background-color: #eaeaea;;
+    height: 150px;
+    width: 100%;
+    flex-direction: column;
+}
+
+#chatForm {
+    height: 100%;
+}
+
+#messageSection {
+    width: 100%;
+    background-color: #FFD500;
+}
+
+#chatWindow {
+    display: flex;
+    height: calc(100% - 52px);
+}
+
+#users {
+    height: calc(100% - 50px);
+    width: 100%;
+    padding: 5px 15px;
+    background-color: #eaeaea;
+}
+
+#userData {
+    padding: 10px 15px;
+    width: 200px;
+    background-color: #c5c5c5;
+}
+
+#inputMessage {
+    background: #FFD500;
     padding: 3px;
     position: fixed;
+    left: 200px;
     bottom: 0;
-    width: 100%;
+    right: 0;
 }
 #messages {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
-#messages li {
-    padding: 5px 10px;
+
+
+#message {
+    width: 70%;
+    height: 35px;
+    margin: 5px 15px 5px 5px;
+    border-radius: 5px;
+    min-width: 160px;
+    width: 100%;
+    padding: 5px;
+
 }
-#messages li:nth-child(odd) {
-    background: #eee;
+
+input, textarea {
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+}
+
+#messageText {
+    display: inline-block;
+    width: calc(100% - 110px);
+    padding: 5px;
+}
+
+#messagesWrapper {
+    background-color: #fff;
+    height: calc(100% - 60px);
+    overflow: auto;
+    padding: 10px 15px;
+}
+
+#messageBtn {
+    display: inline-flex;
+    min-width: 100px;
+}
+
+.myMessage {
+    color: #929292;;
+}
+
+.editionalInfo{
+    font-weight: 300;
+    font-style: italic;
+    font-size: 14px;
+}
+
+#inputMessageWrapper{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.fa-user-circle{
+    font-size: 30px;
+}
+
+.fa-user {
+    font-size: 13px;
+    color: #82fb7a;
+} 
+
+dt {
+    font-weight: bold;
+}
+
+dd {
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+h6 {
+    font-size: 11px;
+    padding-bottom: 5px;
 }
